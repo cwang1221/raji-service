@@ -23,7 +23,7 @@ const config = {
   all: {
     env: process.env.NODE_ENV || 'development',
     root: path.join(__dirname, '..'),
-    port: process.env.PORT || 8080,
+    port: 8080,
     ip: process.env.IP || 'localhost',
     apiRoot: process.env.API_ROOT || '',
     defaultEmail: 'no-reply@service-scaffold.com',

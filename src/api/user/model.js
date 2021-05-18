@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import mongoose from 'mongoose'
 import mongoTenant from 'mongo-tenant'
 import autoIncrement from 'mongoose-sequence'
