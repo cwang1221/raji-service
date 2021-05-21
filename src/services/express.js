@@ -23,7 +23,10 @@ export default function (apiRoot, routes) {
   }
 
   if (env === 'production' || env === 'development') {
-    app.use(cors())
+    app.use(cors({
+      origin: 'http://localhost:3000',
+      credentials : true
+    }))
     app.use(compression())
     app.use(morgan('dev'))
   }
