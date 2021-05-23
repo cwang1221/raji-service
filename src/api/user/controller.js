@@ -62,8 +62,9 @@ export const initAdmin = function ({ headers: { tenant }, body }, res, next) {
   }
 }
 
-export const update = function ({ body, params: { id }, user }, res, next) {
-  User.findOne({ id })
+export const update = function ({ tenant, body, params: { id }, user }, res, next) {
+  User.byTenant(tenant)
+    .findOne({ id })
     .then(notFound(res))
     .then(result => {
       if (!result) {
@@ -86,8 +87,9 @@ export const update = function ({ body, params: { id }, user }, res, next) {
     .catch(next)
 }
 
-export const updatePassword = function ({ body: { password }, params: { id }, user }, res, next) {
-  User.findOne({ id })
+export const updatePassword = function ({ tenant, body: { password }, params: { id }, user }, res, next) {
+  User.byTenant(tenant)
+    .findOne({ id })
     .then(notFound(res))
     .then(result => {
       if (!result) {
@@ -110,8 +112,9 @@ export const updatePassword = function ({ body: { password }, params: { id }, us
     .catch(next)
 }
 
-export const destroy = function ({ params: { id } }, res, next) {
-  User.findOne({ id })
+export const destroy = function ({ tenant, params: { id } }, res, next) {
+  User.byTenant(tenant)
+    .findOne({ id })
     .then(notFound(res))
     .then(user => user ? user.remove() : null)
     .then(success(res, 204))
