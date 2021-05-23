@@ -22,14 +22,12 @@ export default function (apiRoot, routes) {
     app.use(forceSSL)
   }
 
-  if (env === 'production' || env === 'development') {
-    app.use(cors({
-      origin: 'http://localhost:3000',
-      credentials : true
-    }))
-    app.use(compression())
-    app.use(morgan('dev'))
-  }
+  app.use(cors({
+    origin: true,
+    credentials : true
+  }))
+  app.use(compression())
+  app.use(morgan('dev'))
 
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
