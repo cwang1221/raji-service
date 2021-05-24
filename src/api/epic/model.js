@@ -48,7 +48,7 @@ epicSchema.plugin(AutoIncrement, {
   reference_fields: ['tenant']
 })
 
-const model = mongoose.model('Story', epicSchema)
+const model = mongoose.model('Epic', epicSchema)
 
 export const schema = model.schema
 export default model
