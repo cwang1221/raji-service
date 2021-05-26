@@ -11,6 +11,8 @@ export const find = function ({ tenant, querymen: { query, select, option } }, r
 export const findOne = function ({ tenant, params: { id } }, res, next) {
   Epic.byTenant(tenant)
     .findOne({ id })
+    .populate('milestone')
+    .lean()
     .then(notFound(res))
     .then(success(res))
     .catch(next)
