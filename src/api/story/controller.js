@@ -4,6 +4,12 @@ import Story from './model.js'
 export const find = function ({ tenant, querymen: { query, select, option } }, res, next) {
   Story.byTenant(tenant)
     .find(query, select, option)
+    .populate('project')
+    .populate('epic')
+    .populate('requester')
+    .populate('owner')
+    .populate('followers')
+    .lean()
     .then(success(res))
     .catch(next)
 }

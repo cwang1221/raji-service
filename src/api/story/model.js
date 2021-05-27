@@ -2,11 +2,9 @@ import mongoose from 'mongoose'
 import mongoTenant from 'mongo-tenant'
 import autoIncrement from 'mongoose-sequence'
 
-const Schema = mongoose.Schema
-
 const AutoIncrement = autoIncrement(mongoose)
 const types = ['feature', 'bug', 'chore']
-const states = ['newTicker', 'prioritized', 'yippee', 'readyFordeploy']
+const states = ['newTicket', 'prioritized', 'yippee', 'readyFordeploy']
 
 const storySchema = new mongoose.Schema({
   title: {
@@ -28,15 +26,13 @@ const storySchema = new mongoose.Schema({
     trim: true,
     maxLength: 1000
   },
-  project: {
-    type: Schema.ObjectId,
-    ref: 'Project',
+  projectId: {
+    type: Number,
     required: true,
     index: true
   },
-  epic: {
-    type: Schema.ObjectId,
-    ref: 'Epic',
+  epicId: {
+    type: Number,
     required: true,
     index: true
   },
@@ -44,18 +40,16 @@ const storySchema = new mongoose.Schema({
     type: String,
     enum: states,
     required: true,
-    default: 'feature',
+    default: 'newTicket',
     index: true
   },
-  requester: {
-    type: Schema.ObjectId,
-    ref: 'User',
+  requesterId: {
+    type: Number,
     required: true,
     index: true
   },
-  owner: {
-    type: Schema.ObjectId,
-    ref: 'User',
+  ownerId: {
+    type: Number,
     index: true
   },
   estimate: {
@@ -67,9 +61,8 @@ const storySchema = new mongoose.Schema({
   due: {
     type: Date
   },
-  followers: [{
-    type: Schema.ObjectId,
-    ref: 'User',
+  followerIds: [{
+    type: Number,
     index: true
   }],
   labels: [{
@@ -85,6 +78,41 @@ storySchema.plugin(AutoIncrement, {
   id: 'story_seq',
   inc_field: 'id',
   reference_fields: ['tenant']
+})
+
+storySchema.virtual('project', {
+  ref: 'Project',
+  localField: 'projectId',
+  foreignField: 'id',
+  justOne: true
+})
+
+storySchema.virtual('epic', {
+  ref: 'Epic',
+  localField: 'epicId',
+  foreignField: 'id',
+  justOne: true
+})
+
+storySchema.virtual('requester', {
+  ref: 'User',
+  localField: 'requesterId',
+  foreignField: 'id',
+  justOne: true
+})
+
+storySchema.virtual('owner', {
+  ref: 'User',
+  localField: 'ownerId',
+  foreignField: 'id',
+  justOne: true
+})
+
+storySchema.virtual('followers', {
+  ref: 'User',
+  localField: 'followerIds',
+  foreignField: 'id',
+  justOne: false
 })
 
 const model = mongoose.model('Story', storySchema)

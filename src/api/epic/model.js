@@ -27,6 +27,9 @@ const epicSchema = new mongoose.Schema({
   milestoneId: {
     type: Number,
     index: true
+  },
+  indexInMilestone: {
+    type: Number
   }
 }, {
   timestamps: true

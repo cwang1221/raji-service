@@ -8,7 +8,9 @@ const query = querymen.middleware
 
 router.get('/',
   token(),
-  query(),
+  query({
+    state: { type: [String] }
+  }),
   find)
 
 router.get('/:id',
