@@ -58,7 +58,10 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
   delete query.projectId
   Epic.byTenant(tenant)
     .find(query, select, option)
-    .populate('stories')
+    .populate({
+      path: 'stories',
+      populate:{ path:'owner' }
+    })
     .lean()
     .then(epics => {
       epics.forEach(epic => {
@@ -66,10 +69,16 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
 
         epic.totalPoint = 0
         epic.projectIds = []
+        epic.owners = []
 
         epic.stories.forEach(story => {
           epic.totalPoint += story.estimate
           epic.projectIds.includes(story.projectId) || epic.projectIds.push(story.projectId)
+          story.owner && epic.owners.length < 3 && epic.owners.push({
+            id: story.owner.id,
+            name: story.owner.name,
+            avatar: story.owner.picture
+          })
         })
 
         delete epic.stories
