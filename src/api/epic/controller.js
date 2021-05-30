@@ -66,6 +66,8 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
     .then(epics => {
       epics.forEach(epic => {
         epic.countOfStories = epic.stories.length
+        epic.countOfDoneStories = 0
+        epic.countOfInProgressStories = 0
 
         epic.totalPoint = 0
         epic.projectIds = []
@@ -74,11 +76,13 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
         epic.stories.forEach(story => {
           epic.totalPoint += story.estimate
           epic.projectIds.includes(story.projectId) || epic.projectIds.push(story.projectId)
-          story.owner && epic.owners.length < 3 && epic.owners.push({
+          story.owner && epic.owners.length < 3 && !epic.owners.some(owner => owner.id === story.owner.id) && epic.owners.push({
             id: story.owner.id,
             name: story.owner.name,
             avatar: story.owner.picture
           })
+          story.state === 'readyFordeploy' && epic.countOfDoneStories++
+          story.state === 'prioritized' || story.state === 'yippee' && epic.countOfInProgressStories++
         })
 
         delete epic.stories
