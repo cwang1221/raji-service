@@ -46,3 +46,66 @@ export const destroy = function ({ tenant, params: { id } }, res, next) {
     .then(success(res, 204))
     .catch(next)
 }
+
+export const uiList = function ({ tenant, querymen: { query, select, option } }, res, next) {
+  let queryProjectIds
+  if (query.projectId) {
+    queryProjectIds = query.projectId.$in || [query.projectId]
+    queryProjectIds = queryProjectIds.map(id => parseInt(id, 10))
+  }
+  delete query.projectId
+
+  let queryStates
+  if (query.state) {
+    queryStates = query.state.$in || [query.state]
+  }
+  delete query.state
+
+  Milestone.byTenant(tenant)
+    .find(query, select, option)
+    .populate({
+      path: 'epics',
+      populate:{
+        path: 'stories',
+        select: 'owner ownerId state estimate projectId',
+        populate:{
+          path:'owner',
+          select: 'id name picture'
+        }
+      }
+    })
+    .lean()
+    .then(milestones => {
+      milestones = milestones.filter(milestone => milestone.name === 'BACKLOG' || !queryStates || (queryStates && queryStates.includes(milestone.state)))
+      milestones.forEach(milestone => {
+        milestone.epics.forEach(epic => {
+          epic.countOfStories = epic.stories.length
+          epic.countOfDoneStories = 0
+          epic.countOfInProgressStories = 0
+
+          epic.totalPoint = 0
+          epic.projectIds = []
+          epic.owners = []
+
+          epic.stories.forEach(story => {
+            epic.totalPoint += story.estimate
+            epic.projectIds.includes(story.projectId) || epic.projectIds.push(story.projectId)
+            story.owner && epic.owners.length < 3 && !epic.owners.some(owner => owner.id === story.owner.id) && epic.owners.push({
+              id: story.owner.id,
+              name: story.owner.name,
+              avatar: story.owner.picture
+            })
+            story.state === 'readyFordeploy' && epic.countOfDoneStories++
+            story.state === 'prioritized' || story.state === 'yippee' && epic.countOfInProgressStories++
+          })
+
+          delete epic.stories
+        })
+        queryProjectIds && (milestone.epics = milestone.epics.filter(epic => epic.projectIds.some(id => queryProjectIds.includes(id))))
+      })
+      return milestones
+    })
+    .then(success(res))
+    .catch(next)
+}
+

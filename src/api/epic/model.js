@@ -23,13 +23,6 @@ const epicSchema = new mongoose.Schema({
     type: String,
     trim: true,
     maxLength: 1000
-  },
-  milestoneId: {
-    type: Number,
-    index: true
-  },
-  indexInMilestone: {
-    type: Number
   }
 }, {
   timestamps: true
@@ -40,13 +33,6 @@ epicSchema.plugin(AutoIncrement, {
   id: 'epic_seq',
   inc_field: 'id',
   reference_fields: ['tenant']
-})
-
-epicSchema.virtual('milestone', {
-  ref: 'Milestone',
-  localField: 'milestoneId',
-  foreignField: 'id',
-  justOne: true
 })
 
 epicSchema.virtual('stories', {
