@@ -6,6 +6,7 @@ import story from './story/index.js'
 import epic from './epic/index.js'
 import milestone from './milestone/index.js'
 import resetPassword from './resetPassword/index.js'
+import settings from './settings/index.js'
 
 const { Router } = express
 
@@ -18,5 +19,6 @@ router.use('/projects', project)
 router.use('/stories', story)
 router.use('/epics', epic)
 router.use('/milestones', milestone)
+router.use('/settings', settings)
 
 export { router as api }
