@@ -46,3 +46,24 @@ export const destroy = function ({ tenant, params: { id } }, res, next) {
     .then(success(res, 204))
     .catch(next)
 }
+
+export const uiList = function ({ user, tenant }, res, next) {
+  Project.byTenant(tenant)
+    .find()
+    .populate('stories')
+    .lean()
+    .then(projects => {
+      projects.forEach(project => {
+        project.countOfStories = project.stories.length
+        project.totalPoint = 0
+        project.stories.forEach(story => project.totalPoint += story.estimate)
+        delete project.stories
+
+        project.isFollowing = project.followerIds.includes(user.id)
+        delete project.followerIds
+      })
+      return projects
+    })
+    .then(success(res))
+    .catch(next)
+}

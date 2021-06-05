@@ -27,7 +27,11 @@ const projectSchema = new mongoose.Schema({
     type: String,
     enum: types,
     default: 'web'
-  }
+  },
+  followerIds: [{
+    type: Number,
+    index: true
+  }]
 }, {
   timestamps: true
 })
@@ -37,6 +41,13 @@ projectSchema.plugin(AutoIncrement, {
   id: 'project_seq',
   inc_field: 'id',
   reference_fields: ['tenant']
+})
+
+projectSchema.virtual('stories', {
+  ref: 'Story',
+  localField: 'id',
+  foreignField: 'projectId',
+  justOne: false
 })
 
 const model = mongoose.model('Project', projectSchema)
