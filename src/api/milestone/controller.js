@@ -77,6 +77,14 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
     .lean()
     .then(milestones => {
       milestones = milestones.filter(milestone => milestone.name === 'BACKLOG' || !queryStates || (queryStates && queryStates.includes(milestone.state)))
+
+      milestones.sort((milestone1, milestone2) => {
+        if (milestone1.name === 'BACKLOG') {
+          return -1
+        }
+        return milestone1.id - milestone2.id
+      })
+
       milestones.forEach(milestone => {
         milestone.epics.forEach(epic => {
           epic.countOfStories = epic.stories.length
