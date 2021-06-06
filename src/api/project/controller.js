@@ -19,7 +19,17 @@ export const findOne = function ({ tenant, params: { id } }, res, next) {
 export const create = function ({ tenant, body }, res, next) {
   Project.byTenant(tenant)
     .create(body)
-    .then(success(res, 201))
+    .then(({ id }) => {
+      Project.byTenant(tenant)
+        .findOne({ id })
+        .lean()
+        .then(project => {
+          project.countOfStories = 0
+          project.totalPoint = 0
+          return project
+        })
+        .then(success(res, 201))
+    })
     .catch(err => {
       if (err.name === 'ValidationError') {
         error(res, 400, err.message)

@@ -14,14 +14,12 @@ const projectSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    trim: true,
-    required: true
+    trim: true
   },
   color: {
     type: String,
     trim: true,
-    unique: true,
-    required: true,
+    required: true
   },
   type: {
     type: String,
