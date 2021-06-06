@@ -47,7 +47,7 @@ export const destroy = function ({ tenant, params: { id } }, res, next) {
     .catch(next)
 }
 
-export const uiList = function ({ user, tenant }, res, next) {
+export const uiList = function ({ tenant }, res, next) {
   Project.byTenant(tenant)
     .find()
     .populate('stories')
@@ -58,9 +58,6 @@ export const uiList = function ({ user, tenant }, res, next) {
         project.totalPoint = 0
         project.stories.forEach(story => project.totalPoint += story.estimate)
         delete project.stories
-
-        project.isFollowing = project.followerIds.includes(user.id)
-        delete project.followerIds
       })
       return projects
     })
