@@ -4,7 +4,7 @@ import autoIncrement from 'mongoose-sequence'
 
 const AutoIncrement = autoIncrement(mongoose)
 const types = ['feature', 'bug', 'chore']
-const states = ['newTicket', 'prioritized', 'yippee', 'readyFordeploy']
+const states = ['unscheduled', 'readyForDevelopment', 'inDevelopment', 'readyForReview', 'readyForDeply', 'completed']
 
 const storySchema = new mongoose.Schema({
   title: {
@@ -40,7 +40,7 @@ const storySchema = new mongoose.Schema({
     type: String,
     enum: states,
     required: true,
-    default: 'newTicket',
+    default: 'unscheduled',
     index: true
   },
   requesterId: {
@@ -54,9 +54,8 @@ const storySchema = new mongoose.Schema({
   },
   estimate: {
     type: Number,
-    required: true,
     max: 100,
-    min: 1
+    min: 0
   },
   due: {
     type: Date

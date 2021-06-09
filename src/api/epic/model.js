@@ -3,7 +3,7 @@ import mongoTenant from 'mongo-tenant'
 import autoIncrement from 'mongoose-sequence'
 
 const AutoIncrement = autoIncrement(mongoose)
-const states = ['notStarted', 'inProgress', 'readyForDev', 'done']
+const states = ['todo', 'inProgress', 'done']
 
 const epicSchema = new mongoose.Schema({
   name: {
@@ -16,14 +16,17 @@ const epicSchema = new mongoose.Schema({
   state: {
     type: String,
     enum: states,
-    default: 'notStarted',
+    default: 'todo',
     index: true
   },
   description: {
     type: String,
     trim: true,
     maxLength: 1000
-  }
+  },
+  followerIds: [{
+    type: Number
+  }]
 }, {
   timestamps: true
 })
