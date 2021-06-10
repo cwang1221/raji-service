@@ -4,7 +4,7 @@ import autoIncrement from 'mongoose-sequence'
 
 const AutoIncrement = autoIncrement(mongoose)
 const types = ['feature', 'bug', 'chore']
-const states = ['unscheduled', 'readyForDevelopment', 'inDevelopment', 'readyForReview', 'readyForDeply', 'completed']
+const states = ['unscheduled', 'readyForDevelopment', 'inDevelopment', 'readyForReview', 'readyForDeploy', 'completed']
 
 const storySchema = new mongoose.Schema({
   title: {
