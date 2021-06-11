@@ -7,7 +7,7 @@ const router = new express.Router()
 const query = querymen.middleware
 
 router.get('/',
-  token(['admin']),
+  token(),
   query(),
   find)
 
@@ -16,7 +16,7 @@ router.get('/:id',
   findOne)
 
 router.post('/',
-  token(['admin']),
+  token(),
   create)
 
 router.post('/initAdmin',
@@ -32,7 +32,8 @@ router.put('/:id/password',
   updatePassword)
 
 router.delete('/:id',
-  token(['admin']),
+  // token(['admin']) // For admin
+  token(),
   destroy)
 
 export default router

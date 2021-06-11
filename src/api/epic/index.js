@@ -18,15 +18,15 @@ router.get('/:id',
   findOne)
 
 router.post('/',
-  token(['admin']),
+  token(),
   create)
 
 router.put('/:id',
-  token(['admin']),
+  token(),
   update)
 
 router.delete('/:id',
-  token(['admin']),
+  token(),
   destroy)
 
 router.get('/ui/list',

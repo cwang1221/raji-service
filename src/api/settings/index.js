@@ -9,7 +9,7 @@ router.get('/',
   find)
 
 router.put('/',
-  token(['admin']),
+  token(),
   update)
 
 export default router

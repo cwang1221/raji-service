@@ -103,8 +103,8 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
               name: story.owner.name,
               avatar: story.owner.picture
             })
-            story.state === 'readyFordeploy' && epic.countOfDoneStories++
-            story.state === 'prioritized' || story.state === 'yippee' && epic.countOfInProgressStories++
+            story.state === 'completed' && epic.countOfDoneStories++
+            story.state === 'inDevelopment' || story.state === 'readyForReview' || story.state === 'readyForDeploy' && epic.countOfInProgressStories++
           })
 
           delete epic.stories
@@ -112,6 +112,22 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
         queryProjectIds && (milestone.epics = milestone.epics.filter(epic => epic.projectIds.some(id => queryProjectIds.includes(id))))
       })
       return milestones
+    })
+    .then(success(res))
+    .catch(next)
+}
+
+export const addEpic = function ({ tenant, body, params: { id } }, res, next) {
+  Milestone.byTenant(tenant)
+    .findOne({ id })
+    .then(notFound(res))
+    .then(milestone => {
+      if (!milestone) {
+        return null
+      }
+
+      milestone.epicIds.push(body.epicId)
+      return milestone.save()
     })
     .then(success(res))
     .catch(next)
