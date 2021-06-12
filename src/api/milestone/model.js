@@ -13,6 +13,10 @@ const milestoneSchema = new mongoose.Schema({
     trim: true,
     index: true
   },
+  description: {
+    type: String,
+    maxLength: 500,
+  },
   epicIds: [{
     type: Number,
     index: true
