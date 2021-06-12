@@ -1,7 +1,7 @@
 import express from 'express'
 import querymen from 'querymen'
 import { token } from '../../services/passport.js'
-import { find, findOne, create, update, destroy } from './controller.js'
+import { find, findOne, create, update, destroy, uiList } from './controller.js'
 
 const router = new express.Router()
 const query = querymen.middleware
@@ -26,5 +26,14 @@ router.put('/:id',
 router.delete('/:id',
   token(),
   destroy)
+
+router.get('/ui/list',
+  token(),
+  query({
+    projectId: { type: [Number] },
+    epicId: { type: [Number] },
+    state: { type: [String] }
+  }),
+  uiList)
 
 export default router

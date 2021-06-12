@@ -52,3 +52,23 @@ export const destroy = function ({ tenant, params: { id } }, res, next) {
     .then(success(res, 204))
     .catch(next)
 }
+
+export const uiList = function ({ tenant, querymen: { query, select, option } }, res, next) {
+  Story.byTenant(tenant)
+    .find(query, select, option)
+    .populate({
+      path: 'project',
+      select: 'id name color'
+    })
+    .populate({
+      path: 'epic',
+      select: 'id name'
+    })
+    .populate({
+      path:'owner',
+      select: 'id name picture'
+    })
+    .lean()
+    .then(success(res))
+    .catch(next)
+}
