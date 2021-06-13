@@ -34,6 +34,7 @@ const storySchema = new mongoose.Schema({
   epicId: {
     type: Number,
     required: true,
+    default: 0,
     index: true
   },
   state: {
