@@ -104,7 +104,7 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
               avatar: story.owner.picture
             })
             story.state === 'completed' && epic.countOfDoneStories++
-            story.state === 'inDevelopment' || story.state === 'readyForReview' || story.state === 'readyForDeploy' && epic.countOfInProgressStories++
+            (story.state === 'inDevelopment' || story.state === 'readyForReview' || story.state === 'readyForDeploy') && epic.countOfInProgressStories++
           })
 
           delete epic.stories
