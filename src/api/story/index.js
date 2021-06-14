@@ -32,6 +32,7 @@ router.get('/ui/list',
   query({
     projectId: { type: [Number] },
     epicId: { type: [Number] },
+    ownerId: { type: [Number] },
     state: { type: [String] }
   }),
   uiList)
