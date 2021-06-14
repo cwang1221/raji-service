@@ -45,6 +45,13 @@ epicSchema.virtual('stories', {
   justOne: false
 })
 
+epicSchema.virtual('milestone', {
+  ref: 'Milestone',
+  localField: 'id',
+  foreignField: 'epicIds',
+  justOne: true
+})
+
 const model = mongoose.model('Epic', epicSchema)
 
 export const schema = model.schema

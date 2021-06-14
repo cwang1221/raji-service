@@ -33,7 +33,8 @@ router.get('/ui/list',
   token(),
   query({
     state: { type: [String] },
-    projectId: { type: [String] }
+    projectId: { type: [Number] },
+    milestoneId: { type: [Number] }
   }),
   uiList)
 
