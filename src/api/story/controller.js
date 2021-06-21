@@ -39,7 +39,20 @@ export const update = function ({ tenant, body, params: { id } }, res, next) {
   Story.byTenant(tenant)
     .findOne({ id })
     .then(notFound(res))
-    .then(story => story ? Object.assign(story, body).save() : null)
+    .then(story => {
+      if (story) {
+        Object.assign(story, body)
+        if (body.ownerId === 0) {
+          story.ownerId = undefined
+        }
+        if (body.estimate === -1) {
+          story.estimate = undefined
+        }
+
+        return story.save()
+      }
+      return null
+    })
     .then(success(res))
     .catch(next)
 }

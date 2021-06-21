@@ -133,3 +133,30 @@ export const addEpic = function ({ tenant, body, params: { id } }, res, next) {
     .catch(next)
 }
 
+export const changeEpic = function ({ tenant, body, params: { id } }, res, next) {
+  Milestone.byTenant(tenant)
+    .findOne({ epicIds : { $in : [body.epicId] } })
+    .then(notFound(res))
+    .then(milestone => {
+      if (milestone) {
+        let index = milestone.epicIds.indexOf(body.epicId)
+        milestone.epicIds.splice(index, 1)
+        milestone.save()
+
+        Milestone.byTenant(tenant)
+          .findOne({ id })
+          .then(notFound(res))
+          .then(milestone1 => {
+            if (!milestone1) {
+              return null
+            }
+
+            milestone1.epicIds.push(body.epicId)
+            return milestone1.save()
+          })
+          .then(success(res))
+      }
+    })
+    .catch(next)
+}
+
