@@ -4,10 +4,10 @@ COPY . /raji/service
 WORKDIR /raji/service
 RUN npm install
 ENV PORT 8080
-ENV MASTER_KEY NDTFmfh9W0EqLSVrWoHb82wKmykfnRAW
-ENV JWT_SECRET Ack1LWCNKzSTHWQI03j1auqyapiy5VLC
+ENV MASTER_KEY xxxxxx
+ENV JWT_SECRET xxxxxx
 ENV IP 0.0.0.0
-ENV SENDGRID_KEY 951QP0Bh40GBv4FoDAD5La9O1M8EoszO
-ENV MONGODB_URI mongodb+srv://cwang:Wc640801@cluster0.uoq3m.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+ENV SENDGRID_KEY xxxxxx
+ENV MONGODB_URI xxxxxx
 EXPOSE 8080
 CMD ["npm", "start"]
