@@ -90,7 +90,7 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
         epic.totalPoint = 0
 
         epic.stories.forEach(story => {
-          epic.totalPoint += story.estimate
+          epic.totalPoint += story.estimate || 0
           story.state === 'completed' && epic.countOfDoneStories++
           (story.state === 'inDevelopment' || story.state === 'readyForReview' || story.state === 'readyForDeploy') && epic.countOfInProgressStories++
         })

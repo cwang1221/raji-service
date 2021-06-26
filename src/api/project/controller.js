@@ -66,7 +66,7 @@ export const uiList = function ({ tenant }, res, next) {
       projects.forEach(project => {
         project.countOfStories = project.stories.length
         project.totalPoint = 0
-        project.stories.forEach(story => project.totalPoint += story.estimate)
+        project.stories.forEach(story => project.totalPoint += (story.estimate || 0))
         delete project.stories
       })
       return projects

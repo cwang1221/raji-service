@@ -96,7 +96,7 @@ export const uiList = function ({ tenant, querymen: { query, select, option } },
           epic.owners = []
 
           epic.stories.forEach(story => {
-            epic.totalPoint += story.estimate
+            epic.totalPoint += story.estimate || 0
             epic.projectIds.includes(story.projectId) || epic.projectIds.push(story.projectId)
             story.owner && epic.owners.length < 3 && !epic.owners.some(owner => owner.id === story.owner.id) && epic.owners.push({
               id: story.owner.id,
